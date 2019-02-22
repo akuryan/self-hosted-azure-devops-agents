@@ -15,6 +15,9 @@ Param(
     [switch]$abortPackerOnError
 )
 
+#importing module for password generation for installer user
+Import-Module $PSScriptRoot\functions\password-helpers.psm1
+
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
@@ -48,7 +51,13 @@ if ($env:BUILD_REPOSITORY_LOCALPATH) {
 }
 
 $commitId = $(git log --pretty=format:'%H' -n 1)
-"CommitId: $commitId"
+Write-Host "CommitId: $commitId";
+
+$installerUserPwd = Get-RandomCharacters -length 5 -characters 'abcdefghiklmnoprstuvwxyz';
+$installerUserPwd += Get-RandomCharacters -length 1 -characters 'ABCDEFGHKLMNOPRSTUVWXYZ';
+$installerUserPwd += Get-RandomCharacters -length 1 -characters '1234567890';
+$installerUserPwd += Get-RandomCharacters -length 1 -characters '!"§$%&/()=?}][{@#*+';
+$installerUserPwd = Scramble-String $installerUserPwd
 
 
 if ($abortPackerOnError) {
@@ -62,6 +71,7 @@ if ($abortPackerOnError) {
     -var "location=$Location" `
     -var "managed_image_resource_group_name=$ManagedImageResourceGroupName" `
     -var "managed_image_name=$ManagedImageName" `
+    -var "install_password=$installerUserPw" `
     -on-error=abort `
     $PackerFile
 } else {
@@ -75,6 +85,7 @@ if ($abortPackerOnError) {
     -var "location=$Location" `
     -var "managed_image_resource_group_name=$ManagedImageResourceGroupName" `
     -var "managed_image_name=$ManagedImageName" `
+    -var "install_password=$installerUserPw" `
     $PackerFile
 }
 
