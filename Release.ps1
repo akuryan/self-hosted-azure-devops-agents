@@ -37,6 +37,11 @@ Param(
 )
 
 
+if ($VMName.Length -gt 9) {
+    #virtual machine name prefix could not be longer than 9 symbols
+    Write-Error "Please, make VMName value shorter than 9 symbols";
+    exit -1;
+}
 Import-Module $PSScriptRoot\functions\helpers.psm1
 #Construct resources names
 $AgentPoolResourceGroup = GenerateResourceGroupName -baseName $resourcesBaseName;
