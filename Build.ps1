@@ -71,7 +71,7 @@ if ($abortPackerOnError) {
     -var "location=$Location" `
     -var "managed_image_resource_group_name=$ManagedImageResourceGroupName" `
     -var "managed_image_name=$ManagedImageName" `
-    -var "install_password=$installerUserPw" `
+    -var "install_password=$installerUserPwd" `
     -on-error=abort `
     $PackerFile
 } else {
@@ -85,7 +85,7 @@ if ($abortPackerOnError) {
     -var "location=$Location" `
     -var "managed_image_resource_group_name=$ManagedImageResourceGroupName" `
     -var "managed_image_name=$ManagedImageName" `
-    -var "install_password=$installerUserPw" `
+    -var "install_password=$installerUserPwd" `
     $PackerFile
 }
 
