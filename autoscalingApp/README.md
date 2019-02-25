@@ -1,6 +1,6 @@
 # Purpose
 
-This folder holds Azure Web App job for monitoring and autoscaling Azure Agents Virtual Machines Scale Set.
+This folder holds Azure Web App job for monitoring and autoscaling Azure Agents Virtual Machines Scale Set. Usage and purpose is described [here](https://dobryak.org/self-hosted-agents-at-azure-devops-a-little-cost-saving-trick/)
 
 # Known bugs
 
