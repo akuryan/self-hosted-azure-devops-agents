@@ -11,6 +11,9 @@ namespace AzureDevOps.Operations.Helpers
         /// <summary>
         /// Collects Virtual Machines to be started in Virtual Machines Scale Set
         /// </summary>
+        /// <param name="runningJobs">Currently running jobs</param>
+        /// <param name="virtualMachines">Stripped data about VM in VMSS</param>
+        /// <param name="agentsToAllocateCount">Amount of agents to allocate</param>
         /// <returns></returns>
         internal static IEnumerable<ScaleSetVirtualMachineStripped> GetVmsForAllocation(JobRequest[] runningJobs, ScaleSetVirtualMachineStripped[] virtualMachines, int agentsToAllocateCount)
         {
