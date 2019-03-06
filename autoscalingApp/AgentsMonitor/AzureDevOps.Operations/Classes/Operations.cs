@@ -38,7 +38,7 @@ namespace AzureDevOps.Operations.Classes
             //get jobs again to check, if we could deallocate a VM in VMSS
             //(if it is running a job - it is not wise to deallocate it)
             //since getting VMMS is potentially lengthy operation - we could need this)
-            var currentJobs = Checker.DataRetriever.GetRuningJobs(Properties.AgentsPoolId);
+            var currentJobs = Checker.DataRetriever.GetRunningJobs(Properties.AgentsPoolId);
             var amountOfAgents = Decisions.HowMuchAgents(currentJobs.Length, onlineAgents, maxAgentsInPool);
             var addMoreAgents = amountOfAgents > 0;
 
