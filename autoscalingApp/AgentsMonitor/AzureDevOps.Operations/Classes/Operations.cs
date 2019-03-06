@@ -71,7 +71,7 @@ namespace AzureDevOps.Operations.Classes
             }           
         }
 
-        private static AzureCredentials AzureCreds()
+        private static AzureCredentials Credentials()
         {
             var clientId = ConfigurationManager.AppSettings[Constants.AzureServicePrincipleClientIdSettingName];
             var clientSecret = ConfigurationManager.AppSettings[Constants.AzureServicePrincipleClientSecretSettingName];
@@ -83,7 +83,7 @@ namespace AzureDevOps.Operations.Classes
         private static IVirtualMachineScaleSet GetVirtualMachinesScaleSet(string rgName,
             string virtualMachinesScaleSetName)
         {
-            var credentials = AzureCreds();
+            var credentials = Credentials();
 
             var azure = Azure
                 .Configure()
