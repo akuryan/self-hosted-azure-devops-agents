@@ -16,11 +16,6 @@ namespace TableStorageClient.Classes
 
         public async Task InsertOrReplaceEntityAsync(T entity)
         {
-            if (entity == null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
-
             var insertOrReplaceOperation = TableOperation.InsertOrReplace(entity);
             await Table.ExecuteAsync(insertOrReplaceOperation);
         }
