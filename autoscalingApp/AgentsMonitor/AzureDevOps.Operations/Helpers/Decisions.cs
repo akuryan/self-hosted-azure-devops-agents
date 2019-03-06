@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using AzureDevOps.Operations.Classes;
+﻿using AzureDevOps.Operations.Classes;
 using AzureDevOps.Operations.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AzureDevOps.Operations.Helpers
 {
@@ -42,22 +41,17 @@ namespace AzureDevOps.Operations.Helpers
                 }
             }
 
-            if (dynamicProperties.WeAreInsideBusinessTime && amountOfAgents > 0)
+            if (dynamicProperties.WeAreInsideBusinessTime && amountOfAgents > 0 && agentsCount < Properties.AmountOfAgents)
             {
-                //we need to provision more agents
-                if (agentsCount < Properties.AmountOfAgents)
-                {
-                    //if we need to give more agents - we need to decide on amount to be given
-                    amountOfAgents = Properties.AmountOfAgents - agentsCount > amountOfAgents
-                        ? Properties.AmountOfAgents - agentsCount
-                        : amountOfAgents;
-                }
+                amountOfAgents = Properties.AmountOfAgents - agentsCount > amountOfAgents
+                    ? Properties.AmountOfAgents - agentsCount
+                    : amountOfAgents;
             }
 
             return amountOfAgents > maxAgents ? Math.Abs(maxAgents - agentsCount) : amountOfAgents;
         }
 
-        public static ScaleSetVirtualMachineStripped[] CollectInstanceIdsToDeallocate(IEnumerable<ScaleSetVirtualMachineStripped>vmScaleSetStripped, JobRequest[] jobRequests)
+        public static ScaleSetVirtualMachineStripped[] CollectInstanceIdsToDeallocate(IEnumerable<ScaleSetVirtualMachineStripped> vmScaleSetStripped, JobRequest[] jobRequests)
         {
             var busyAgentsNames = jobRequests.Select(job => job.ReservedAgent?.Name).ToArray();
 
@@ -71,7 +65,7 @@ namespace AzureDevOps.Operations.Helpers
         /// <returns></returns>
         public static bool IsVmExecutingJob(string vmName)
         {
-            var currentJobs = Checker.DataRetriever.GetRuningJobs(Properties.AgentsPoolId);
+            var currentJobs = Checker.DataRetriever.GetRunningJobs(Properties.AgentsPoolId);
             return currentJobs.Select(job => job.ReservedAgent.Name).Contains(vmName);
         }
     }

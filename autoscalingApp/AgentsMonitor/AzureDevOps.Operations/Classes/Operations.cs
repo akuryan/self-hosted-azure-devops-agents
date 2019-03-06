@@ -38,7 +38,7 @@ namespace AzureDevOps.Operations.Classes
             //get jobs again to check, if we could deallocate a VM in VMSS
             //(if it is running a job - it is not wise to deallocate it)
             //since getting VMMS is potentially lengthy operation - we could need this)
-            var currentJobs = Checker.DataRetriever.GetRuningJobs(Properties.AgentsPoolId);
+            var currentJobs = Checker.DataRetriever.GetRunningJobs(Properties.AgentsPoolId);
             var amountOfAgents = Decisions.HowMuchAgents(currentJobs.Length, onlineAgents, maxAgentsInPool);
             var addMoreAgents = amountOfAgents > 0;
 
@@ -62,8 +62,8 @@ namespace AzureDevOps.Operations.Classes
             RecordDataInTable(addMoreAgents, amountOfAgents);
 
             if (addMoreAgents)
-            {
-                AllocateVms(virtualMachines, amountOfAgents, vmss);
+            {              
+                AllocateVms(DataPreparation.GetVmsForAllocation(currentJobs, virtualMachines, amountOfAgents), vmss);
             }
             else
             {
@@ -71,7 +71,7 @@ namespace AzureDevOps.Operations.Classes
             }           
         }
 
-        private static AzureCredentials AzureCreds()
+        private static AzureCredentials Credentials()
         {
             var clientId = ConfigurationManager.AppSettings[Constants.AzureServicePrincipleClientIdSettingName];
             var clientSecret = ConfigurationManager.AppSettings[Constants.AzureServicePrincipleClientSecretSettingName];
@@ -83,7 +83,7 @@ namespace AzureDevOps.Operations.Classes
         private static IVirtualMachineScaleSet GetVirtualMachinesScaleSet(string rgName,
             string virtualMachinesScaleSetName)
         {
-            var credentials = AzureCreds();
+            var credentials = Credentials();
 
             var azure = Azure
                 .Configure()
@@ -170,26 +170,17 @@ namespace AzureDevOps.Operations.Classes
             }
         }
 
-        private static void AllocateVms(ScaleSetVirtualMachineStripped[] virtualMachinesStripped, int agentsLimit, IVirtualMachineScaleSet scaleSet)
+        private static void AllocateVms(IEnumerable<ScaleSetVirtualMachineStripped> virtualMachinesStripped, IVirtualMachineScaleSet scaleSet)
         {
-            //this counter is needed to not start extra agents, maybe VM is already starting
-            var virtualMachinesCounter =
-                virtualMachinesStripped.Count(vm => vm.VmInstanceState.Equals(PowerState.Starting));
-
             Console.WriteLine("Starting more VMs");
-            foreach (var virtualMachineStripped in virtualMachinesStripped.Where(vm => vm.VmInstanceState.Equals(PowerState.Deallocated)))
+            foreach (var virtualMachineStripped in virtualMachinesStripped)
             {
-                if (virtualMachinesCounter >= agentsLimit)
-                {
-                    break;
-                }
                 Console.WriteLine($"Starting VM {virtualMachineStripped.VmName} with id {virtualMachineStripped.VmInstanceId}");
                 if (!Properties.IsDryRun)
                 {
                     scaleSet.VirtualMachines.Inner.BeginStartWithHttpMessagesAsync(Properties.VmScaleSetResourceGroupName, Properties.VmScaleSetName,
                         virtualMachineStripped.VmInstanceId);
                 }
-                virtualMachinesCounter++;
             }
         }
 

@@ -212,7 +212,7 @@ namespace AzureDevOps.Operations.Tests.Helpers
         {
             var dataRetriever = RetrieveTests.CreateRetriever(jsonData);
             return Decisions.CollectInstanceIdsToDeallocate(vmScaleSetData.Where(vm => vm.VmInstanceState.Equals(PowerState.Running)),
-                dataRetriever.GetRuningJobs(poolId));
+                dataRetriever.GetRunningJobs(poolId));
         }
 
         /// <summary>

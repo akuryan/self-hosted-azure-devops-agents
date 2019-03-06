@@ -108,7 +108,7 @@ namespace AzureDevOps.Operations.Classes
         /// <returns></returns>
         public int GetCurrentJobsRunningCount(int agentsPoolId)
         {
-            var allJobsRequests = GetRuningJobs(agentsPoolId);
+            var allJobsRequests = GetRunningJobs(agentsPoolId);
 
             //count amount of jobs without result - they are running
             return allJobsRequests?.Length ?? 0;
@@ -125,7 +125,7 @@ namespace AzureDevOps.Operations.Classes
         /// </summary>
         /// <param name="agentsPoolId"></param>
         /// <returns></returns>
-        public JobRequest[] GetRuningJobs(int agentsPoolId)
+        public JobRequest[] GetRunningJobs(int agentsPoolId)
         {
             var url = $"{AzureDevOpsUrl}/{AzureDevOpsOrganizationName}/{TasksBaseUrl}/{agentsPoolId}/jobrequests";
             return GetData.DownloadSerializedJsonData<JobRequests>(url, AzureDevOpsPersonalAccessToken, _localHttpClient)?.AllJobRequests?.Where(x => x.Result == null).ToArray();
