@@ -168,6 +168,7 @@
     <Compile Include="Classes\Constants.cs" />
     <Compile Include="Classes\Operations.cs" />
     <Compile Include="Classes\Retrieve.cs" />
+    <Compile Include="Helpers\DataPreparation.cs" />
     <Compile Include="Helpers\Decisions.cs" />
     <Compile Include="Helpers\DynamicProps.cs" />
     <Compile Include="Helpers\LeaveTheBuilding.cs" />
