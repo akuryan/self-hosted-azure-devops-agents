@@ -21,7 +21,7 @@ namespace AzureDevOps.Operations.Helpers
             var vmsToStart = virtualMachines
                 .Where(vm => CollectDemandedAgentNames(runningJobs).Contains(vm.VmName)).ToList();
             
-            agentsToAllocateCount = agentsToAllocateCount - 1;
+            agentsToAllocateCount = agentsToAllocateCount - vmsToStart.Count;
             //we do not need to start extra VMs, if there is some of them starting already
             agentsToAllocateCount = agentsToAllocateCount -
                              virtualMachines
