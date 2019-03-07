@@ -77,7 +77,7 @@ namespace AzureDevOps.Operations.Tests.Helpers
             testValid = new ScaleSetVirtualMachineStripped
             {
                 VmName = "Agent1",
-                VmInstanceId = "2052",
+                VmInstanceId = "210",
                 VmInstanceState = PowerState.Deallocated
             };
 
@@ -85,7 +85,7 @@ namespace AzureDevOps.Operations.Tests.Helpers
             testValid = new ScaleSetVirtualMachineStripped
             {
                 VmName = "Agent2",
-                VmInstanceId = "20522",
+                VmInstanceId = "215",
                 VmInstanceState = PowerState.Deallocated
             };
 

@@ -16,20 +16,27 @@ namespace AzureDevOps.Operations.Helpers
         /// <param name="virtualMachines">Stripped data about VM in VMSS</param>
         /// <param name="agentsToAllocateCount">Amount of agents to allocate</param>
         /// <returns></returns>
-        public static IEnumerable<ScaleSetVirtualMachineStripped> GetVmsForAllocation(JobRequest[] runningJobs, ScaleSetVirtualMachineStripped[] virtualMachines, int agentsToAllocateCount)
+        public static IEnumerable<ScaleSetVirtualMachineStripped> GetVmsForAllocation(JobRequest[] runningJobs, IEnumerable<ScaleSetVirtualMachineStripped> virtualMachines, int agentsToAllocateCount)
         {
-            var vmsToStart = virtualMachines
+            var virtualMachinesCollectionEnumerated = virtualMachines.ToList();
+            var vmsToStart = virtualMachinesCollectionEnumerated
                 .Where(vm => CollectDemandedAgentNames(runningJobs).Contains(vm.VmName)).ToList();
+
+            //remove already added values
+            foreach (var virtualMachine in vmsToStart)
+            {
+                virtualMachinesCollectionEnumerated.Remove(virtualMachine);
+            }
             
             agentsToAllocateCount = agentsToAllocateCount - vmsToStart.Count;
             //we do not need to start extra VMs, if there is some of them starting already
             agentsToAllocateCount = agentsToAllocateCount -
-                             virtualMachines
+                             virtualMachinesCollectionEnumerated
                                  .Count(vm => vm.VmInstanceState.Equals(PowerState.Starting));
             agentsToAllocateCount = agentsToAllocateCount < 0 ? 0 : agentsToAllocateCount;
 
             //out of deallocated VMs - select needed amount of agents
-            vmsToStart.AddRange(virtualMachines
+            vmsToStart.AddRange(virtualMachinesCollectionEnumerated
                 .Where(vm => vm.VmInstanceState.Equals(PowerState.Deallocated))
                 .Take(agentsToAllocateCount).ToList());
 
