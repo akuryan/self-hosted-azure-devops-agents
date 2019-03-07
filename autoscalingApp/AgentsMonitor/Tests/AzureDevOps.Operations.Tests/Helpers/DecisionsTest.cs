@@ -9,6 +9,7 @@ using System.Configuration;
 using System.Linq;
 using AzureDevOps.Operations.Classes;
 using AzureDevOps.Operations.Helpers.Mockable;
+using AzureDevOps.Operations.Tests.TestsHelpers;
 using Microsoft.Azure.Management.Compute.Fluent;
 
 namespace AzureDevOps.Operations.Tests.Helpers
@@ -210,9 +211,8 @@ namespace AzureDevOps.Operations.Tests.Helpers
 
         private static ScaleSetVirtualMachineStripped[] GetInstanceIds(IEnumerable<ScaleSetVirtualMachineStripped> vmScaleSetData, int poolId = TestsConstants.TestPoolId, string jsonData = TestsConstants.Json1JobIsRunning)
         {
-            var dataRetriever = RetrieveTests.CreateRetriever(jsonData);
             return Decisions.CollectInstanceIdsToDeallocate(vmScaleSetData.Where(vm => vm.VmInstanceState.Equals(PowerState.Running)),
-                dataRetriever.GetRunningJobs(poolId));
+                HelperMethods.GetSimulatedJobRequests(poolId, jsonData));
         }
 
         /// <summary>

@@ -3,6 +3,7 @@ using Microsoft.Azure.Management.Compute.Fluent;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AzureDevOps.Operations.Classes;
 
 namespace AzureDevOps.Operations.Helpers
 {
@@ -15,11 +16,10 @@ namespace AzureDevOps.Operations.Helpers
         /// <param name="virtualMachines">Stripped data about VM in VMSS</param>
         /// <param name="agentsToAllocateCount">Amount of agents to allocate</param>
         /// <returns></returns>
-        internal static IEnumerable<ScaleSetVirtualMachineStripped> GetVmsForAllocation(JobRequest[] runningJobs, ScaleSetVirtualMachineStripped[] virtualMachines, int agentsToAllocateCount)
+        public static IEnumerable<ScaleSetVirtualMachineStripped> GetVmsForAllocation(JobRequest[] runningJobs, ScaleSetVirtualMachineStripped[] virtualMachines, int agentsToAllocateCount)
         {
             var vmsToStart = new List<ScaleSetVirtualMachineStripped>();
-            const string agentNameMarker = "Agent.Name -equals ";
-
+            
             foreach (var job in runningJobs)
             {
                 //check, if any of our jobs wants specific agent
@@ -28,12 +28,12 @@ namespace AzureDevOps.Operations.Helpers
                     continue;
                 }
                 var agentNameIndex =
-                    Array.FindIndex(job.Demands, x => x.ToLower().StartsWith(agentNameMarker.ToLower()));
+                    Array.FindIndex(job.Demands, x => x.ToLower().StartsWith(Constants.AgentNameMarker.ToLower()));
                 if (agentNameIndex < 0)
                 {
                     continue;
                 }
-                var agentName = job.Demands[agentNameIndex].Replace(agentNameMarker, string.Empty);
+                var agentName = job.Demands[agentNameIndex].Replace(Constants.AgentNameMarker, string.Empty);
 
                 if (string.IsNullOrWhiteSpace(agentName))
                 {
@@ -55,6 +55,16 @@ namespace AzureDevOps.Operations.Helpers
                 .Take(agentsToAllocateCount).ToList());
 
             return vmsToStart;
+        }
+
+        /// <summary>
+        /// Collects all agent names, which are demanded <see cref="JobRequest.Demands"/> by scheduled jobs
+        /// </summary>
+        /// <param name="scheduledJobs"></param>
+        /// <returns></returns>
+        public static string[] CollectDemandedAgentNames(JobRequest[] scheduledJobs)
+        {
+            return null;
         }
     }
 }

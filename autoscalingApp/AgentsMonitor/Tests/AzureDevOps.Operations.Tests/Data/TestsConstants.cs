@@ -19,5 +19,13 @@
         /// Point to JSON with 3 running jobs
         /// </summary>
         internal const string Json3JobIsRunning = @"..\..\Data\TestData\JobRequests\jobs-3-running.json";
+        /// <summary>
+        /// Points to JSON with 3 waiting jobs and 2 of them have agent name demand
+        /// </summary>
+        internal const string Json_3_jobs_2_demands = @"..\..\Data\TestData\JobRequests\jobs-3-running-2-demands.json";
+        /// <summary>
+        /// Points to JSON with 0 waiting jobs, where 1 have defined demand for an agent name
+        /// </summary>
+        internal const string Json_0_jobs_1_demands = @"..\..\Data\TestData\JobRequests\jobs-0-running-1-demands.json";
     }
 }

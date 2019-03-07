@@ -106,16 +106,20 @@
     <Compile Include="Classes\RetrieveTests.cs" />
     <Compile Include="Classes\TestInitilizers.cs" />
     <Compile Include="Data\TestsConstants.cs" />
+    <Compile Include="Helpers\DataPreparationTests.cs" />
     <Compile Include="Helpers\DecisionsTest.cs" />
     <Compile Include="Helpers\DynamicPropsTests.cs" />
     <Compile Include="Helpers\PropertiesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestsHelpers\HelperMethods.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Data\TestData\Agents\allAgents.json" />
     <None Include="Data\TestData\GetPoolId\pools-fail.json" />
     <None Include="Data\TestData\GetPoolId\pools-success.json" />
+    <None Include="Data\TestData\JobRequests\jobs-0-running-1-demands.json" />
+    <None Include="Data\TestData\JobRequests\jobs-3-running-2-demands.json" />
     <None Include="Data\TestData\JobRequests\jobs-3-running.json" />
     <None Include="Data\TestData\JobRequests\jobs-1-running.json" />
     <None Include="Data\TestData\JobRequests\jobs-0-running.json" />
