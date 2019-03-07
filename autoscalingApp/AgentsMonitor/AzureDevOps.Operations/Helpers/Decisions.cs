@@ -55,7 +55,9 @@ namespace AzureDevOps.Operations.Helpers
         {
             var busyAgentsNames = jobRequests.Select(job => job.ReservedAgent?.Name).ToArray();
 
-            return vmScaleSetStripped.Where(scaleSetVirtualMachineStripped => !busyAgentsNames.Contains(scaleSetVirtualMachineStripped.VmName)).ToArray();
+            return vmScaleSetStripped
+                .Where(scaleSetVirtualMachineStripped => !busyAgentsNames.Contains(scaleSetVirtualMachineStripped.VmName))
+                .ToArray();
         }
 
         /// <summary>

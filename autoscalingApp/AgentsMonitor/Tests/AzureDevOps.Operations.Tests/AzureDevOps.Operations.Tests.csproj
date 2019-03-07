@@ -118,6 +118,7 @@
     <None Include="Data\TestData\Agents\allAgents.json" />
     <None Include="Data\TestData\GetPoolId\pools-fail.json" />
     <None Include="Data\TestData\GetPoolId\pools-success.json" />
+    <None Include="Data\TestData\JobRequests\jobs-0-running-no-demands.json" />
     <None Include="Data\TestData\JobRequests\jobs-0-running-1-demands.json" />
     <None Include="Data\TestData\JobRequests\jobs-3-running-2-demands.json" />
     <None Include="Data\TestData\JobRequests\jobs-3-running.json" />

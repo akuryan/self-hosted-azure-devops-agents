@@ -16,7 +16,8 @@ namespace AzureDevOps.Operations.Tests.Helpers
         [TestCase(TestsConstants.TestPoolId, TestsConstants.Json1JobIsRunning, 0)]
         [TestCase(TestsConstants.TestPoolId, TestsConstants.Json3JobIsRunning, 0)]
         [TestCase(TestsConstants.TestPoolId, TestsConstants.Json_3_jobs_2_demands, 2)]
-        [TestCase(TestsConstants.TestPoolId, TestsConstants.Json_0_jobs_1_demands, 1)]
+        [TestCase(TestsConstants.TestPoolId, TestsConstants.Json_0_jobs_1_demands, 0)]
+        [TestCase(TestsConstants.TestPoolId, TestsConstants.Json_0_jobs_NO_demands, 0)]
         public static void TestRetrievalOfDemandedAgentsNames(int agentPoolId, string jsonData, int expectedCountOfDemandCollection)
         {
             var scheduledJobs = HelperMethods.GetSimulatedJobRequests(agentPoolId, jsonData);

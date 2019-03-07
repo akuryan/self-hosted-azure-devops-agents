@@ -27,5 +27,7 @@
         /// Points to JSON with 0 waiting jobs, where 1 have defined demand for an agent name
         /// </summary>
         internal const string Json_0_jobs_1_demands = @"..\..\Data\TestData\JobRequests\jobs-0-running-1-demands.json";
+
+        internal const string Json_0_jobs_NO_demands = @"..\..\Data\TestData\JobRequests\jobs-0-running-no-demands.json";
     }
 }

@@ -18,31 +18,10 @@ namespace AzureDevOps.Operations.Helpers
         /// <returns></returns>
         public static IEnumerable<ScaleSetVirtualMachineStripped> GetVmsForAllocation(JobRequest[] runningJobs, ScaleSetVirtualMachineStripped[] virtualMachines, int agentsToAllocateCount)
         {
-            var vmsToStart = new List<ScaleSetVirtualMachineStripped>();
+            var vmsToStart = virtualMachines
+                .Where(vm => CollectDemandedAgentNames(runningJobs).Contains(vm.VmName)).ToList();
             
-            foreach (var job in runningJobs)
-            {
-                //check, if any of our jobs wants specific agent
-                if (job.Demands == null)
-                {
-                    continue;
-                }
-                var agentNameIndex =
-                    Array.FindIndex(job.Demands, x => x.ToLower().StartsWith(Constants.AgentNameMarker.ToLower()));
-                if (agentNameIndex < 0)
-                {
-                    continue;
-                }
-                var agentName = job.Demands[agentNameIndex].Replace(Constants.AgentNameMarker, string.Empty);
-
-                if (string.IsNullOrWhiteSpace(agentName))
-                {
-                    continue;
-                }
-                vmsToStart.Add(virtualMachines.SingleOrDefault(vm =>
-                    vm.VmName.Equals(agentName, StringComparison.OrdinalIgnoreCase)));
-                agentsToAllocateCount = agentsToAllocateCount - 1;
-            }
+            agentsToAllocateCount = agentsToAllocateCount - 1;
             //we do not need to start extra VMs, if there is some of them starting already
             agentsToAllocateCount = agentsToAllocateCount -
                              virtualMachines
@@ -64,7 +43,15 @@ namespace AzureDevOps.Operations.Helpers
         /// <returns></returns>
         public static string[] CollectDemandedAgentNames(JobRequest[] scheduledJobs)
         {
-            return null;
+            return (from job in scheduledJobs 
+                where job.Demands != null 
+                let agentNameIndex = Array.FindIndex(job.Demands, x => x.ToLower().StartsWith(Constants.AgentNameMarker.ToLower())) 
+                where agentNameIndex >= 0 
+                select job.Demands[agentNameIndex].Replace(Constants.AgentNameMarker, string.Empty) 
+                into agentName 
+                where !string.IsNullOrWhiteSpace(agentName) 
+                select agentName)
+                .ToArray();
         }
     }
 }

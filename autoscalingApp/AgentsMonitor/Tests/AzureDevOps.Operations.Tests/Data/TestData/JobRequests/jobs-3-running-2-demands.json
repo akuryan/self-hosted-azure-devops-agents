@@ -212,7 +212,7 @@
       "planType": "Build",
       "planId": "12345678-c0c6-4e10-bfd0-c1b518a399f7",
       "jobId": "12345678-1c7a-5b21-02e1-d41a394e29c9",
-      "demands": [ "Agent.Version -gtVersion 2.115.0" ],
+      "demands": [ "Agent.Version -gtVersion 2.115.0", "Agent.Name -equals Agent"  ],
       "reservedAgent": {
         "_links": {
           "self": { "href": "https://dev.azure.com/testOrganization/_apis/distributedtask/pools/4/agents/3" },
@@ -260,7 +260,7 @@
       "planType": "Build",
       "planId": "12345678-c0c6-4e10-bfd0-c1b518a399f7",
       "jobId": "12345678-1c7a-5b21-02e1-d41a394e29c9",
-      "demands": [ "Agent.Version -gtVersion 2.115.0" ],
+      "demands": [ "Agent.Version -gtVersion 2.115.0", "Agent.Name -equals Agent1"  ],
       "reservedAgent": {
         "_links": {
           "self": { "href": "https://dev.azure.com/testOrganization/_apis/distributedtask/pools/4/agents/3" },
