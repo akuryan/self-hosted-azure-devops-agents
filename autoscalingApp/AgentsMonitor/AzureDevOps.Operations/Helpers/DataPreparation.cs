@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace AzureDevOps.Operations.Helpers
 {
-    public class DataPreparation
+    public static class DataPreparation
     {
         /// <summary>
         /// Collects Virtual Machines to be started in Virtual Machines Scale Set
