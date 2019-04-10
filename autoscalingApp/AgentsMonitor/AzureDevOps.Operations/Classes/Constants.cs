@@ -77,5 +77,9 @@
         /// Setting name to retrieve minimal amount of agents running during business time
         /// </summary>
         public const string BusinessHoursAgentsAmountSettingName = "BusinessHours_agents";
+        /// <summary>
+        /// String, that allows to identify agent name, demanded by allocated job in <see cref="AzureDevOps.Operations.Models.JobRequest.Demands"/>
+        /// </summary>
+        public const string AgentNameMarker = "Agent.Name -equals ";
     }
 }

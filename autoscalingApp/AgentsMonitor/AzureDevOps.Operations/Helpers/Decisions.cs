@@ -9,21 +9,21 @@ namespace AzureDevOps.Operations.Helpers
     public static class Decisions
     {
         /// <summary>
-        /// Decides how much agents must be added
+        /// Decides how much agents must be added/stopped
         /// </summary>
-        /// <param name="runningJobs">Amount of current jobs running</param>
+        /// <param name="jobs">Amount of current jobs running and/or waiting</param>
         /// <param name="agentsCount">Amount of online agents now</param>
         /// <param name="maxAgents">Maximum accessible agents in current pool</param>
-        /// <returns></returns>
-        public static int HowMuchAgents(int runningJobs, int agentsCount, int maxAgents)
+        /// <returns>Count of agents to be added (positive) or stopped (negative)</returns>
+        public static int HowMuchAgents(int jobs, int agentsCount, int maxAgents)
         {
-            if (agentsCount == maxAgents && runningJobs >= agentsCount)
+            if (agentsCount == maxAgents && jobs >= agentsCount)
             {
                 //there is more jobs than we could have agents deployed
                 return 0;
             }
 
-            var amountOfAgents = runningJobs - agentsCount;
+            var amountOfAgents = jobs - agentsCount;
 
             var dynamicProperties = new DynamicProps();
 
@@ -55,7 +55,9 @@ namespace AzureDevOps.Operations.Helpers
         {
             var busyAgentsNames = jobRequests.Select(job => job.ReservedAgent?.Name).ToArray();
 
-            return vmScaleSetStripped.Where(scaleSetVirtualMachineStripped => !busyAgentsNames.Contains(scaleSetVirtualMachineStripped.VmName)).ToArray();
+            return vmScaleSetStripped
+                .Where(scaleSetVirtualMachineStripped => !busyAgentsNames.Contains(scaleSetVirtualMachineStripped.VmName))
+                .ToArray();
         }
 
         /// <summary>

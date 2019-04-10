@@ -9,6 +9,7 @@ using System.Configuration;
 using System.Linq;
 using AzureDevOps.Operations.Classes;
 using AzureDevOps.Operations.Helpers.Mockable;
+using AzureDevOps.Operations.Tests.TestsHelpers;
 using Microsoft.Azure.Management.Compute.Fluent;
 
 namespace AzureDevOps.Operations.Tests.Helpers
@@ -132,7 +133,7 @@ namespace AzureDevOps.Operations.Tests.Helpers
             var testArray = new ScaleSetVirtualMachineStripped[1];
             testArray[0] = testValid;
 
-            var vmScaleSetData = GetTestData(10, testArray);
+            var vmScaleSetData = HelperMethods.GetTestData(10, testArray);
             var instanceIds = GetInstanceIds(vmScaleSetData);
             Assert.IsTrue(instanceIds.Length.Equals(10));
             Assert.IsFalse(instanceIds[0].VmInstanceId.Equals(testValid.VmInstanceId));
@@ -168,7 +169,7 @@ namespace AzureDevOps.Operations.Tests.Helpers
 
             testArray[2] = testValid;
 
-            var vmScaleSetData = GetTestData(10, testArray);
+            var vmScaleSetData = HelperMethods.GetTestData(10, testArray);
             var instanceIds = GetInstanceIds(vmScaleSetData, TestsConstants.TestPoolId, TestsConstants.Json3JobIsRunning);
             Assert.IsTrue(instanceIds.Length.Equals(10));
             Assert.IsFalse(instanceIds[0].VmInstanceId.Equals(testArray[0].VmInstanceId));
@@ -178,7 +179,7 @@ namespace AzureDevOps.Operations.Tests.Helpers
         public static void TestInstanceIdRetrieval_agent_is_not_there()
         {
             //this test describes situation, when we have something running in the pool, but not on our agents :); really weird issue
-            var vmScaleSetData = GetTestData(10);
+            var vmScaleSetData = HelperMethods.GetTestData(10);
 
             var instanceIds = GetInstanceIds(vmScaleSetData);
             Assert.IsTrue(instanceIds.Length.Equals(10));
@@ -188,7 +189,7 @@ namespace AzureDevOps.Operations.Tests.Helpers
         public static void TestInstanceIdRetrieval_no_jobs_retrieved()
         {
             //this test ensures that when there is no jobs running - we can deallocate all VMs
-            var vmScaleSetData = GetTestData(10);
+            var vmScaleSetData = HelperMethods.GetTestData(10);
 
             var instanceIds = GetInstanceIds(vmScaleSetData, 1);
             Assert.IsTrue(instanceIds.Length.Equals(10));
@@ -199,7 +200,7 @@ namespace AzureDevOps.Operations.Tests.Helpers
         [Test]
         public static void TestInstanceIdRetrieval_no_running_vms_there()
         {
-            var vmScaleSetData = GetTestData(10);
+            var vmScaleSetData = HelperMethods.GetTestData(10);
             foreach (var t in vmScaleSetData)
             {
                 t.VmInstanceState = PowerState.Deallocated;
@@ -210,37 +211,8 @@ namespace AzureDevOps.Operations.Tests.Helpers
 
         private static ScaleSetVirtualMachineStripped[] GetInstanceIds(IEnumerable<ScaleSetVirtualMachineStripped> vmScaleSetData, int poolId = TestsConstants.TestPoolId, string jsonData = TestsConstants.Json1JobIsRunning)
         {
-            var dataRetriever = RetrieveTests.CreateRetriever(jsonData);
             return Decisions.CollectInstanceIdsToDeallocate(vmScaleSetData.Where(vm => vm.VmInstanceState.Equals(PowerState.Running)),
-                dataRetriever.GetRunningJobs(poolId));
-        }
-
-        /// <summary>
-        /// Generates stripped VMSS list to work with; allows to generate to amount which is needed and add custom data to the collection
-        /// </summary>
-        /// <param name="testListSize"></param>
-        /// <param name="addedData"></param>
-        /// <returns></returns>
-        private static List<ScaleSetVirtualMachineStripped> GetTestData(int testListSize, ScaleSetVirtualMachineStripped[] addedData = null)
-        {
-            var vmScaleSetData = new List<ScaleSetVirtualMachineStripped>();
-            if (addedData != null)
-            {
-                vmScaleSetData.AddRange(addedData);
-            }
-
-            for (var counter = 0; counter < testListSize; counter++)
-            {
-                vmScaleSetData.Add(new ScaleSetVirtualMachineStripped
-                {
-                    VmName = $"vm{counter}",
-                    VmInstanceId = $"{counter}",
-                    VmInstanceState = PowerState.Running
-                });
-            }
-
-            return vmScaleSetData;
-
+                HelperMethods.GetSimulatedJobRequests(poolId, jsonData));
         }
     }
 }
