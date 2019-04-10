@@ -134,14 +134,14 @@ namespace AzureDevOps.Operations.Classes
                 }
                 Console.WriteLine($"Deallocating VM with instance ID {vmInstance}");
                 virtualMachinesCounter++;
-                if (Properties.IsDryRun)
-                {
-                    continue;
-                }
-
                 if (Decisions.IsVmExecutingJob(vmInstance.VmName))
                 {
                     //this VM just got job assigned, so we should not deallocate it
+                    continue;
+                }
+
+                if (Properties.IsDryRun)
+                {
                     continue;
                 }
 
