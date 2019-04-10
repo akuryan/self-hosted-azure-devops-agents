@@ -68,7 +68,7 @@ namespace AzureDevOps.Operations.Helpers
         public static bool IsVmExecutingJob(string vmName)
         {
             var currentJobs = Checker.DataRetriever.GetRunningJobs(Properties.AgentsPoolId);
-            return currentJobs.Select(job => job.ReservedAgent.Name).Contains(vmName);
+            return currentJobs.Select(job => job.ReservedAgent?.Name).Contains(vmName);
         }
     }
 }
