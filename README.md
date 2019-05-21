@@ -7,9 +7,9 @@ Since it took big amount of efforts to put the repository to this state - I deci
 
 1. Create your own packer image description. I am using [own fork](https://github.com/akuryan/vsts-image-generation) of https://github.com/Microsoft/azure-pipelines-image-generation as a submodule, as I do not need all the features Microsoft adds to their's build agents.
 
-1. Build image locally (in future, you will be able to do it via agent, but, if you do not have private agents – msft one’s would not allow you to run 4-7 hours long job, as far as I know). It is done via [Build.ps1](https://github.com/akuryan/self-hosted-azure-devops-agents/blob/master/Build.ps1) with parameters (for automating it as a Build pipeline at Azure DevOps – there is a https://github.com/akuryan/self-hosted-azure-devops-agents/blob/master/builds/build.yaml - in fact, just one step). See further for parameters.
+1. Build image locally (in future, you will be able to do it via agent, but, if you do not have private agents – msft one’s would not allow you to run 4-7 hours long job, as far as I know). It is done via [Build.ps1](https://github.com/akuryan/self-hosted-azure-devops-agents/blob/master/Build.ps1) with parameters (for automating it as a Build pipeline at Azure DevOps – there is a https://github.com/akuryan/self-hosted-azure-devops-agents/blob/master/builds/build.yaml - in fact, just one step). See further for parameters. After you have an own hosted agent running - you could create a build on it to [refresh an image](./docs/image-Refresh-Build.md). 
 
-1. After image is built – you can deploy your new agents via https://github.com/akuryan/self-hosted-azure-devops-agents/blob/master/Release.ps1 - this you could do already at Microsoft agents. See further for parameters.
+1. After image is built – you can deploy your new agents via https://github.com/akuryan/self-hosted-azure-devops-agents/blob/master/Release.ps1 - this you could do already at Microsoft agents. See further for parameters and see [description of release pipeline](./docs/deploy-Agent.md)
 
 When this is done – you can build and deploy autoscaling application https://github.com/akuryan/self-hosted-azure-devops-agents/tree/master/autoscalingApp (there is an arm template and little bit of description at my blog https://dobryak.org/self-hosted-agents-at-azure-devops-a-little-cost-saving-trick/ ).
 
@@ -33,7 +33,7 @@ While you are working on Autoscaling app – you can use https://github.com/akur
 
 ```ManagedImageResourceGroupName``` - resource group, where image will be stored
 
-```ManagedImageName``` - Image name; if image with such name exists in ```ManagedImageResourceGroupName``` - it will be removed
+```ManagedImageName``` - Image name prefix; it will be postfixed with build number.
 
 ```InstallPrerequisites``` - switch, should script install packer and git on environment, where it is executed
 
