@@ -1,6 +1,6 @@
 # How to
 
-This release gets it's artifacts from [autoscaler app build](.\autoscaler-app-build.md) and contains 1 job with 3 steps:
+This release gets it's artifacts from [autoscaler app build](./autoscaler-app-build.md) and contains 1 job with 3 steps:
 
 1. `Azure PowerShell` which invokes inline script to stop web job: `Invoke-AzureRmResourceAction -ResourceGroupName $(webjob.rg.name) -ResourceType Microsoft.Web/sites/continuouswebjobs -ResourceName $(webjob.webapp.name)/$(webJob.autoscaler.name) -Action Stop -Force -ApiVersion 2018-02-01`
 

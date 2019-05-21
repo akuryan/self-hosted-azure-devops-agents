@@ -63,6 +63,6 @@ After building of ```~\AgentsMonitor\AgentsMonitor.sln``` all required binaries 
 
 ## CI/CD setup
 
-[Prepare build](..\docs\autoscaler-app-build.md)
+[Prepare build](../docs/autoscaler-app-build.md)
 
-[Prepare release](..\docs\autoscaler-app-release.md)
+[Prepare release](../docs/autoscaler-app-release.md)
