@@ -60,3 +60,9 @@ They must be specified in following connection strings: ```AzureWebJobsDashboard
 ## Deployment
 
 After building of ```~\AgentsMonitor\AgentsMonitor.sln``` all required binaries will be outputted to ```~\WebJob\AutoScaler``` (paths are given relative to current dir ```autoscalingApp```). To publish them as Azure WebJob - just deliver them to web app, deployed with [ARM template in this repository](./arm-template/) to the path ```wwwroot/App_Data/jobs/continuous/AutoScaler``` and runtime of web app will take care of the rest. Also, this webjob could be executed locally, given you have provided it with access to Azure Storage (could be emulated one via Azure Storage Emulator), as it is a requirement for timers.
+
+## CI/CD setup
+
+[Prepare build](..\docs\autoscaler-app-build.md)
+
+[Prepare release](..\docs\autoscaler-app-release.md)
